@@ -115,6 +115,7 @@ void *myo_get(t_myo *self);  // threaded function
 void myo_connect(t_myo *self, t_symbol *s, long argc, t_atom *argv);
 void myo_disconnect(t_myo *self);
 void myo_info(t_myo *self);
+void myo_vibrate(t_myo *self, t_symbol *s, long argc, t_atom *argv);
 void myo_assist(t_myo *self, void *b, long m, long a, char *s);
 void *myo_new(t_symbol *s, long argc, t_atom *argv);
 void myo_free(t_myo *self);
@@ -127,6 +128,13 @@ t_max_err myoSetUnlockAttr(t_myo *self, void *attr, long ac, t_atom *av);
 t_max_err myoGetUnlockAttr(t_myo *self, t_object *attr, long* ac, t_atom** av);
 
 t_class *myo_class;
+
+static t_symbol *emptysym = gensym("");
+static t_symbol *sym_short = gensym("short");
+static t_symbol *sym_medium = gensym("medium");
+static t_symbol *sym_long = gensym("long");
+static t_symbol *sym_rssi = gensym("rssi");
+static t_symbol *sym_battery = gensym("battery");
 
 #pragma mark -
 #pragma mark Functions
@@ -149,7 +157,8 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)myo_disconnect, "disconnect",     0);
     class_addmethod(c, (method)myo_info,       "info",     0);
     class_addmethod(c, (method)myo_assist,     "assist",   A_CANT, 0);	// (optional) assistance method needs to be declared like this
-    
+    class_addmethod(c, (method)myo_vibrate,    "vibrate",    A_GIMME, 0);
+
     // Play
     // ------------------------------
     CLASS_ATTR_LONG(c, "stream", 0, t_myo, dummy_attr_long);
@@ -281,6 +290,10 @@ void *myo_get(t_myo *self)
     try {
         post("Attempting to find a Myo...");
         
+        if (self->myoHub)
+            delete self->myoHub;
+        self->myoHub = new myo::Hub("com.julesfrancoise.maxmyo");
+        
         // Next, we attempt to find a Myo to use. If a Myo is already paired in Myo Connect, this will return that Myo
         // immediately.
         // waitForMyo() takes a timeout value in milliseconds. In this case we will try to find a Myo for 10 seconds, and
@@ -329,6 +342,7 @@ void *myo_get(t_myo *self)
             systhread_mutex_unlock(self->mutex);
         }
         
+        self->myoHub->removeListener(self->myoListener);
         self->myoHub->setLockingPolicy(myo::Hub::lockingPolicyStandard);
         post("Disconnected from the Myo armband!");
         self->myo_connected = false;
@@ -423,6 +437,44 @@ void myo_disconnect(t_myo *self)
         self->systhread_cancel = true;			// tell the thread to stop
         systhread_join(self->systhread, &ret);	// wait for the thread to stop
         self->systhread = NULL;
+    }
+}
+
+void myo_vibrate(t_myo *self, t_symbol *s, long argc, t_atom *argv)
+{
+    if (!self->myo_connected)
+        return;
+    if (argc == 0) {
+        self->myoDevice->notifyUserAction();
+    } else {
+        if (atom_isnum(argv)) {
+            switch (atom_getlong(argv)) {
+                case 0:
+                    self->myoDevice->vibrate(myo::Myo::vibrationShort);
+                    break;
+                    
+                case 1:
+                    self->myoDevice->vibrate(myo::Myo::vibrationMedium);
+                    break;
+                    
+                case 2:
+                    self->myoDevice->vibrate(myo::Myo::vibrationLong);
+                    break;
+                    
+                default:
+                    break;
+            }
+        } else if (atom_issym(argv)) {
+            t_symbol *arg_sym = atom_getsym(argv);
+            if (arg_sym == sym_short)
+                self->myoDevice->vibrate(myo::Myo::vibrationShort);
+            else if (arg_sym == sym_medium)
+                self->myoDevice->vibrate(myo::Myo::vibrationMedium);
+            else if (arg_sym == sym_long)
+                self->myoDevice->vibrate(myo::Myo::vibrationLong);
+            else
+                return;
+        }
     }
 }
 
@@ -572,7 +624,7 @@ void MaxMyoListener::onEmgData(myo::Myo* myo, uint64_t timestamp, const int8_t* 
 void MaxMyoListener::onRssi(myo::Myo* myo, uint64_t timestamp, int8_t rssi)
 {
     t_atom value_out[2];
-    atom_setsym(value_out, gensym("rssi"));
+    atom_setsym(value_out, sym_rssi);
     atom_setlong(value_out+1, static_cast<int>(rssi));
     outlet_list(maxObject_->outlet_info, NULL, 2, value_out);
 }
@@ -580,7 +632,7 @@ void MaxMyoListener::onRssi(myo::Myo* myo, uint64_t timestamp, int8_t rssi)
 void MaxMyoListener::onBatteryLevelReceived(myo::Myo* myo, uint64_t timestamp, uint8_t level)
 {
     t_atom value_out[2];
-    atom_setsym(value_out, gensym("battery"));
+    atom_setsym(value_out, sym_battery);
     atom_setlong(value_out+1, static_cast<int>(level));
     outlet_list(maxObject_->outlet_info, NULL, 2, value_out);
 }

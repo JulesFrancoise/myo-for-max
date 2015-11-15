@@ -1,0 +1,4 @@
+ide/osx-xcode/build
+ide/osx-xcode/myo.xcodeproj/project.xcworkspace
+ide/osx-xcode/myo.xcodeproj/xcuserdata
+*.png

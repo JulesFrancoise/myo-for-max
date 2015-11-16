@@ -103,6 +103,13 @@ void Hub::onDeviceEvent(libmyo_event_t event)
 
     if (!myo && libmyo_event_get_type(event) == libmyo_event_paired) {
         myo = addMyo(opaqueMyo);
+        //--------------- begin ----------------
+        // https://developer.thalmic.com/forums/topic/537/
+        libmyo_string_t name_t = libmyo_event_get_myo_name(event);
+        std::string name = libmyo_string_c_str(name_t);
+        libmyo_string_free(name_t);
+        myo->setName(name);
+        //--------------- end ----------------
     }
 
     if (!myo) {

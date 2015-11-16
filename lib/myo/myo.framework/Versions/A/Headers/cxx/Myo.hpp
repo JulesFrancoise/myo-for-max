@@ -64,6 +64,16 @@ public:
     libmyo_myo_t libmyoObject() const;
 
     /// @endcond
+    
+    void setName(std::string myoName)
+    {
+        name = myoName;
+    }
+    
+    std::string getName()
+    {
+        return name;
+    }
 
 private:
     Myo(libmyo_myo_t myo);
@@ -76,6 +86,7 @@ private:
     Myo& operator=(const Myo&);
 
     friend class Hub;
+    std::string name;
 };
 
 } // namespace myo

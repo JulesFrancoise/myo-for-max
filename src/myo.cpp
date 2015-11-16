@@ -26,8 +26,6 @@
 #define mysneg(s) ((s)->s_name)
 #define atom_setvoid(p) ((p)->a_type = A_NOTHING)
 
-// static int myo_ids;
-
 typedef struct _myo t_myo;
 
 #pragma mark -
@@ -125,6 +123,7 @@ void myo_dump_emg(t_myo *self);
 void myo_dump_accel(t_myo *self);
 void myo_dump_gyro(t_myo *self);
 void myo_dump_quat(t_myo *self);
+void onMaxMyoSync(t_myo *self);
 
 void *myo_run(t_myo *self);  // threaded function
 
@@ -145,6 +144,7 @@ static t_symbol *sym_long = gensym("long");
 static t_symbol *sym_rssi = gensym("rssi");
 static t_symbol *sym_battery = gensym("battery");
 static t_symbol *sym_auto = gensym("auto");
+static t_symbol *sym_connected = gensym("connected");
 
 t_class *myo_class;
 
@@ -171,7 +171,7 @@ int C74_EXPORT main(void)
     class_addmethod(c, (method)myo_assist,     "assist",   A_CANT, 0);	// (optional) assistance method needs to be declared like this
     class_addmethod(c, (method)myo_vibrate,    "vibrate",    A_GIMME, 0);
     
-    // Play
+    // Stream
     // ------------------------------
     CLASS_ATTR_LONG(c, "stream", 0, t_myo, dummy_attr_long);
     CLASS_ATTR_FILTER_MIN (c, "stream", 0);
@@ -207,6 +207,9 @@ int C74_EXPORT main(void)
     return 0;
 }
 
+/**
+ * Constructor
+ */
 void *myo_new(t_symbol *s, long argc, t_atom *argv)
 {
     t_myo *self;
@@ -236,6 +239,7 @@ void *myo_new(t_symbol *s, long argc, t_atom *argv)
         
         self->listenerRunning = false;
         
+        // get device name if object has argument
         if (ac > 0 && atom_issym(argv))
             self->deviceName = atom_getsym(argv);
         
@@ -244,22 +248,24 @@ void *myo_new(t_symbol *s, long argc, t_atom *argv)
             // publishing your application. The Hub provides access to one or more Myos.
             self->myoHub = new myo::Hub("com.julesfrancoise.maxmyo");
             
-            // Hub::addListener() takes the address of any object whose class inherits from DeviceListener, and will cause
-            // Hub::run() to send events to all registered device listeners.
+            // Create a device listener and add is to the hub listeners
             self->myoListener = new MaxMyoListener(self);
             self->myoHub->addListener(self->myoListener);
         } catch (const std::exception& e) {
             object_error((t_object *)self, e.what());
         }
         
+        // process attributes
         attr_args_process(self, argc, argv);
     }
     return(self);
 }
 
+/**
+ * Destructor
+ */
 void myo_free(t_myo *self)
 {
-    // stop thread
     myo_disconnect(self);
     
     self->myoDevice = NULL;
@@ -274,6 +280,10 @@ void myo_free(t_myo *self)
         systhread_mutex_free(self->mutex);
 }
 
+/**
+ * [info]
+ * get information on available devices + battery/RSSI of the device in use
+ */
 void myo_info(t_myo *self)
 {
     myo_dump_devlist(self);
@@ -283,6 +293,9 @@ void myo_info(t_myo *self)
     }
 }
 
+/**
+ * dumps the list of available devices
+ */
 void myo_dump_devlist(t_myo *self)
 {
     long listlen = 1 + self->myoListener->connectedDevices.size();
@@ -296,6 +309,9 @@ void myo_dump_devlist(t_myo *self)
     outlet_list(self->outlet_info, NULL, listlen, devlist);
 }
 
+/**
+ * inlet/outlet hover info
+ */
 void myo_assist(t_myo *self, void *b, long m, long a, char *s)
 {
     if (m == ASSIST_INLET) { //inlet
@@ -327,6 +343,9 @@ void myo_assist(t_myo *self, void *b, long m, long a, char *s)
     }
 }
 
+/**
+ * Threaded function to run the event listener
+ */
 void *myo_run(t_myo *self)
 {
     // We catch any exceptions that might occur below -- see the catch statement for more details.
@@ -361,6 +380,10 @@ void *myo_run(t_myo *self)
     return NULL;
 }
 
+/**
+ * [bang]
+ * outputs the current frame
+ */
 void myo_bang(t_myo *self)
 {
     if (self->myoDevice) {
@@ -371,6 +394,9 @@ void myo_bang(t_myo *self)
     }
 }
 
+/**
+ * dumps emg data
+ */
 void myo_dump_emg(t_myo *self)
 {
     t_atom value_out[8];
@@ -381,6 +407,9 @@ void myo_dump_emg(t_myo *self)
     outlet_list(self->outlet_emg, NULL, 8, value_out);
 }
 
+/**
+ * dumps acceleration data
+ */
 void myo_dump_accel(t_myo *self)
 {
     t_atom value_out[3];
@@ -391,7 +420,9 @@ void myo_dump_accel(t_myo *self)
     outlet_list(self->outlet_accel, NULL, 3, value_out);
 }
 
-
+/**
+ * dumps gyro data
+ */
 void myo_dump_gyro(t_myo *self)
 {
     t_atom value_out[3];
@@ -402,7 +433,9 @@ void myo_dump_gyro(t_myo *self)
     outlet_list(self->outlet_gyro, NULL, 3, value_out);
 }
 
-
+/**
+ * dumps orientation data (quaternions)
+ */
 void myo_dump_quat(t_myo *self)
 {
     t_atom value_out[4];
@@ -413,6 +446,10 @@ void myo_dump_quat(t_myo *self)
     outlet_list(self->outlet_quat, NULL, 4, value_out);
 }
 
+/**
+ * [connect]
+ * starts the listener thread to connect to available myos
+ */
 void myo_connect(t_myo *self, t_symbol *s, long argc, t_atom *argv)
 {
     if (self->listenerRunning) return;
@@ -424,6 +461,10 @@ void myo_connect(t_myo *self, t_symbol *s, long argc, t_atom *argv)
     }
 }
 
+/**
+ * [disconnect]
+ * disconnect from sensors (stops listener thread)
+ */
 void myo_disconnect(t_myo *self)
 {
     unsigned int ret;
@@ -438,6 +479,10 @@ void myo_disconnect(t_myo *self)
     }
 }
 
+/**
+ * [vibrate]
+ * trigger myo vibrations
+ */
 void myo_vibrate(t_myo *self, t_symbol *s, long argc, t_atom *argv)
 {
     if (!self->myoDevice) return;
@@ -477,6 +522,10 @@ void myo_vibrate(t_myo *self, t_symbol *s, long argc, t_atom *argv)
 
 #pragma mark -
 #pragma mark Attributes
+/**
+ * [stream 0/1]
+ * set streaming attribute (sensor data streamed as received)
+ */
 t_max_err myoSetStreamAttr(t_myo *self, void *attr, long ac, t_atom *av)
 {
     if(ac > 0 && atom_isnum(av)) {
@@ -489,6 +538,9 @@ t_max_err myoSetStreamAttr(t_myo *self, void *attr, long ac, t_atom *av)
     
 }
 
+/**
+ * get streaming attribute (sensor data streamed as received)
+ */
 t_max_err myoGetStreamAttr(t_myo *self, t_object *attr, long* ac, t_atom** av)
 {
     if ((*ac) == 0 || (*av) == NULL)
@@ -507,6 +559,10 @@ t_max_err myoGetStreamAttr(t_myo *self, t_object *attr, long* ac, t_atom** av)
     return MAX_ERR_NONE;
 }
 
+/**
+ * [emg 0/1]
+ * specifies if the raw emg data should be streamed
+ */
 t_max_err myoSetStreamEmgAttr(t_myo *self, void *attr, long ac, t_atom *av)
 {
     if(ac > 0 && atom_isnum(av)) {
@@ -525,6 +581,9 @@ t_max_err myoSetStreamEmgAttr(t_myo *self, void *attr, long ac, t_atom *av)
     
 }
 
+/**
+ * specifies if the raw emg data should be streamed
+ */
 t_max_err myoGetStreamEmgAttr(t_myo *self, t_object *attr, long* ac, t_atom** av)
 {
     if ((*ac) == 0 || (*av) == NULL)
@@ -543,6 +602,10 @@ t_max_err myoGetStreamEmgAttr(t_myo *self, t_object *attr, long* ac, t_atom** av
     return MAX_ERR_NONE;
 }
 
+/**
+ * [unlock 0/1]
+ * specifies if the Myo is unlocked for pose recognition
+ */
 t_max_err myoSetUnlockAttr(t_myo *self, void *attr, long ac, t_atom *av)
 {
     if(ac > 0 && atom_isnum(av)) {
@@ -559,6 +622,9 @@ t_max_err myoSetUnlockAttr(t_myo *self, void *attr, long ac, t_atom *av)
     
 }
 
+/**
+ * specifies if the Myo is unlocked for pose recognition
+ */
 t_max_err myoGetUnlockAttr(t_myo *self, t_object *attr, long* ac, t_atom** av)
 {
     if ((*ac) == 0 || (*av) == NULL)
@@ -577,6 +643,10 @@ t_max_err myoGetUnlockAttr(t_myo *self, t_object *attr, long* ac, t_atom** av)
     return MAX_ERR_NONE;
 }
 
+/**
+ * [device <myoname>]
+ * specifies the name of the myo device to listen
+ */
 t_max_err myoSetDeviceAttr(t_myo *self, void *attr, long ac, t_atom *av)
 {
     if(ac > 0 && atom_issym(av)) {
@@ -593,13 +663,8 @@ t_max_err myoSetDeviceAttr(t_myo *self, void *attr, long ac, t_atom *av)
                     }
                 }
             }
-            if (self->myoDevice) {
-                object_post((t_object *)self, ("Connected to myo " + self->myoDevice->getName()).c_str());
-                if (self->myoPolicy_emg)
-                    self->myoDevice->setStreamEmg(myo::Myo::streamEmgEnabled);
-                else
-                    self->myoDevice->setStreamEmg(myo::Myo::streamEmgDisabled);
-            } else {
+            onMaxMyoSync(self);
+            if (!self->myoDevice) {
                 object_warn((t_object *)self, ("Myo named " + std::string(self->deviceName->s_name) + " is not connected. Waiting...").c_str());
             }
         }
@@ -611,6 +676,9 @@ t_max_err myoSetDeviceAttr(t_myo *self, void *attr, long ac, t_atom *av)
     
 }
 
+/**
+ * specifies the name of the myo device to listen
+ */
 t_max_err myoGetDeviceAttr(t_myo *self, t_object *attr, long* ac, t_atom** av)
 {
     if ((*ac) == 0 || (*av) == NULL)
@@ -629,6 +697,25 @@ t_max_err myoGetDeviceAttr(t_myo *self, t_object *attr, long* ac, t_atom** av)
     return MAX_ERR_NONE;
 }
 
+/**
+ * outputs max messages when max is synced with a myo
+ */void onMaxMyoSync(t_myo *self)
+{
+    t_atom deviceInfo[2];
+    atom_setsym(deviceInfo, sym_connected);
+    if (self->myoDevice) {
+        if (self->myoPolicy_emg)
+            self->myoDevice->setStreamEmg(myo::Myo::streamEmgEnabled);
+        else
+            self->myoDevice->setStreamEmg(myo::Myo::streamEmgDisabled);
+        atom_setsym(deviceInfo+1, gensym(self->myoDevice->getName().c_str()));
+        object_post((t_object *)self, ("Connected to myo " + self->myoDevice->getName()).c_str());
+    } else {
+        atom_setlong(deviceInfo+1, 0);
+    }
+    outlet_list(self->outlet_info, NULL, 2, deviceInfo);
+}
+
 #pragma mark -
 #pragma mark Myo Device Listener: Methods
 void MaxMyoListener::onConnect(myo::Myo* myo, uint64_t timestamp, myo::FirmwareVersion firmwareVersion)
@@ -638,22 +725,13 @@ void MaxMyoListener::onConnect(myo::Myo* myo, uint64_t timestamp, myo::FirmwareV
     if (maxObject_->deviceName == sym_auto) {
         if (connectedDevices.size() == 1) {
             maxObject_->myoDevice = myo;
-            if (maxObject_->myoPolicy_emg)
-                maxObject_->myoDevice->setStreamEmg(myo::Myo::streamEmgEnabled);
-            else
-                maxObject_->myoDevice->setStreamEmg(myo::Myo::streamEmgDisabled);
-            object_post((t_object *)maxObject_, ("Connected to myo " + myo->getName()).c_str());
         }
     } else {
         if (std::string(maxObject_->deviceName->s_name) == myo->getName()) {
             maxObject_->myoDevice = myo;
-            if (maxObject_->myoPolicy_emg)
-                maxObject_->myoDevice->setStreamEmg(myo::Myo::streamEmgEnabled);
-            else
-                maxObject_->myoDevice->setStreamEmg(myo::Myo::streamEmgDisabled);
-            object_post((t_object *)maxObject_, ("Connected to myo " + myo->getName()).c_str());
         }
     }
+    onMaxMyoSync(maxObject_);
 }
 
 void MaxMyoListener::onDisconnect(myo::Myo* myo, uint64_t timestamp)
@@ -664,13 +742,9 @@ void MaxMyoListener::onDisconnect(myo::Myo* myo, uint64_t timestamp)
         maxObject_->myoDevice = NULL;
         if (connectedDevices.size() > 0 && maxObject_->deviceName == sym_auto) {
             maxObject_->myoDevice = *(connectedDevices.begin());
-            if (maxObject_->myoPolicy_emg)
-                maxObject_->myoDevice->setStreamEmg(myo::Myo::streamEmgEnabled);
-            else
-                maxObject_->myoDevice->setStreamEmg(myo::Myo::streamEmgDisabled);
-            object_post((t_object *)maxObject_, ("Connected to myo " + maxObject_->myoDevice->getName()).c_str());
         }
     }
+    onMaxMyoSync(maxObject_);
     emgSamples.fill(0);
     acceleration.fill(0);
     gyroscopes.fill(0);

@@ -98,6 +98,7 @@ struct _myo {
     void                *outlet_info;
     
     t_symbol *deviceName; // Name of the Myo device
+    bool myo_connect_running;
     bool listenerRunning;
     
     // Attributes
@@ -251,8 +252,10 @@ void *myo_new(t_symbol *s, long argc, t_atom *argv)
             // Create a device listener and add is to the hub listeners
             self->myoListener = new MaxMyoListener(self);
             self->myoHub->addListener(self->myoListener);
+            self->myo_connect_running = true;
         } catch (const std::exception& e) {
             object_error((t_object *)self, e.what());
+            self->myo_connect_running = false;
         }
         
         // process attributes
@@ -289,6 +292,7 @@ void myo_free(t_myo *self)
  */
 void myo_info(t_myo *self)
 {
+    if (!self->myo_connect_running) return;
     myo_dump_devlist(self);
     if (self->myoDevice) {
         self->myoDevice->requestBatteryLevel();
@@ -301,6 +305,7 @@ void myo_info(t_myo *self)
  */
 void myo_dump_devlist(t_myo *self)
 {
+    if (!self->myo_connect_running) return;
     long listlen = 1 + self->myoListener->connectedDevices.size();
     t_atom *devlist = (t_atom*) sysmem_newptr(sizeof(t_atom) * listlen);
     atom_setsym(devlist, gensym("devices"));
@@ -351,7 +356,7 @@ void myo_assist(t_myo *self, void *b, long m, long a, char *s)
  */
 void *myo_run(t_myo *self)
 {
-    if (!self->myoHub) return NULL;
+    if (!self->myo_connect_running) return NULL;
     // We catch any exceptions that might occur below -- see the catch statement for more details.
     try {
         self->systhread_cancel = false;
@@ -390,6 +395,7 @@ void *myo_run(t_myo *self)
  */
 void myo_bang(t_myo *self)
 {
+    if (!self->myo_connect_running) return;
     if (self->myoDevice) {
         myo_dump_emg(self);
         myo_dump_quat(self);
@@ -456,7 +462,7 @@ void myo_dump_quat(t_myo *self)
  */
 void myo_connect(t_myo *self, t_symbol *s, long argc, t_atom *argv)
 {
-    if (self->listenerRunning) return;
+    if (self->listenerRunning || !self->myo_connect_running) return;
     if (self->systhread == NULL)
     {
         self->listenerRunning = true;
@@ -470,8 +476,8 @@ void myo_connect(t_myo *self, t_symbol *s, long argc, t_atom *argv)
  */
 void myo_disconnect(t_myo *self)
 {
+    if (!self->myo_connect_running) return;
     unsigned int ret;
-    
     if (self->systhread)
     {
         //object_post((t_object *)self, "stopping thread");
@@ -488,7 +494,7 @@ void myo_disconnect(t_myo *self)
  */
 void myo_vibrate(t_myo *self, t_symbol *s, long argc, t_atom *argv)
 {
-    if (!self->myoDevice) return;
+    if (!self->myoDevice || !self->myo_connect_running) return;
     if (argc == 0) {
         self->myoDevice->notifyUserAction();
     } else {
@@ -570,6 +576,7 @@ t_max_err myoSetStreamEmgAttr(t_myo *self, void *attr, long ac, t_atom *av)
 {
     if(ac > 0 && atom_isnum(av)) {
         self->myoPolicy_emg = atom_getlong(av) != 0;
+        if (!self->myo_connect_running) return MAX_ERR_NONE;
         if (self->myoDevice) {
             if (self->myoPolicy_emg)
                 self->myoDevice->setStreamEmg(myo::Myo::streamEmgEnabled);
@@ -611,10 +618,10 @@ t_max_err myoGetStreamEmgAttr(t_myo *self, t_object *attr, long* ac, t_atom** av
  */
 t_max_err myoSetUnlockAttr(t_myo *self, void *attr, long ac, t_atom *av)
 {
-    if (!self->myoHub) return MAX_ERR_NONE;
     if(ac > 0 && atom_isnum(av)) {
         self->myoPolicy_unlock = atom_getlong(av) != 0;
-        if (self->myoPolicy_unlock)
+        if (!self->myo_connect_running) return MAX_ERR_NONE;
+        if (self->myoPolicy_unlock && self->myo_connect_running)
             self->myoHub->setLockingPolicy(myo::Hub::lockingPolicyNone);
         else
             self->myoHub->setLockingPolicy(myo::Hub::lockingPolicyStandard);
@@ -657,6 +664,7 @@ t_max_err myoSetDeviceAttr(t_myo *self, void *attr, long ac, t_atom *av)
         if (self->deviceName != atom_getsym(av)) {
             self->deviceName = atom_getsym(av);
             self->myoDevice = NULL;
+            if (!self->myo_connect_running) return MAX_ERR_NONE;
             if (self->deviceName == sym_auto) {
                 if (self->myoListener->connectedDevices.size() > 0)
                     self->myoDevice = *(self->myoListener->connectedDevices.begin());
@@ -703,8 +711,10 @@ t_max_err myoGetDeviceAttr(t_myo *self, t_object *attr, long* ac, t_atom** av)
 
 /**
  * outputs max messages when max is synced with a myo
- */void onMaxMyoSync(t_myo *self)
+ */
+void onMaxMyoSync(t_myo *self)
 {
+    if (!self->myo_connect_running) return;
     t_atom deviceInfo[2];
     atom_setsym(deviceInfo, sym_connected);
     if (self->myoDevice) {

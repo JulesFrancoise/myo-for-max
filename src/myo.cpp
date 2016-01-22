@@ -267,15 +267,18 @@ void *myo_new(t_symbol *s, long argc, t_atom *argv)
 void myo_free(t_myo *self)
 {
     myo_disconnect(self);
-    
     self->myoDevice = NULL;
     
-    self->myoHub->removeListener(self->myoListener);
-    delete self->myoListener;
+    if (self->myoListener) {
+        self->myoHub->removeListener(self->myoListener);
+        delete self->myoListener;
+    }
     
-    self->myoHub->setLockingPolicy(myo::Hub::lockingPolicyStandard);
-    delete self->myoHub;
-    
+    if (self->myoHub) {
+        self->myoHub->setLockingPolicy(myo::Hub::lockingPolicyStandard);
+        delete self->myoHub;
+
+    }
     if (self->mutex)
         systhread_mutex_free(self->mutex);
 }
@@ -610,10 +613,10 @@ t_max_err myoSetUnlockAttr(t_myo *self, void *attr, long ac, t_atom *av)
 {
     if(ac > 0 && atom_isnum(av)) {
         self->myoPolicy_unlock = atom_getlong(av) != 0;
-            if (self->myoPolicy_unlock)
-                self->myoHub->setLockingPolicy(myo::Hub::lockingPolicyNone);
-            else
-                self->myoHub->setLockingPolicy(myo::Hub::lockingPolicyStandard);
+        if (self->myoPolicy_unlock)
+            self->myoHub->setLockingPolicy(myo::Hub::lockingPolicyNone);
+        else
+            self->myoHub->setLockingPolicy(myo::Hub::lockingPolicyStandard);
     }
     else
         object_error((t_object *)self, "missing or invalid arguments for unlock");

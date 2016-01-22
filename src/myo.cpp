@@ -277,8 +277,8 @@ void myo_free(t_myo *self)
     if (self->myoHub) {
         self->myoHub->setLockingPolicy(myo::Hub::lockingPolicyStandard);
         delete self->myoHub;
-
     }
+    
     if (self->mutex)
         systhread_mutex_free(self->mutex);
 }
@@ -351,6 +351,7 @@ void myo_assist(t_myo *self, void *b, long m, long a, char *s)
  */
 void *myo_run(t_myo *self)
 {
+    if (!self->myoHub) return NULL;
     // We catch any exceptions that might occur below -- see the catch statement for more details.
     try {
         self->systhread_cancel = false;
@@ -456,7 +457,6 @@ void myo_dump_quat(t_myo *self)
 void myo_connect(t_myo *self, t_symbol *s, long argc, t_atom *argv)
 {
     if (self->listenerRunning) return;
-    
     if (self->systhread == NULL)
     {
         self->listenerRunning = true;
@@ -611,6 +611,7 @@ t_max_err myoGetStreamEmgAttr(t_myo *self, t_object *attr, long* ac, t_atom** av
  */
 t_max_err myoSetUnlockAttr(t_myo *self, void *attr, long ac, t_atom *av)
 {
+    if (!self->myoHub) return MAX_ERR_NONE;
     if(ac > 0 && atom_isnum(av)) {
         self->myoPolicy_unlock = atom_getlong(av) != 0;
         if (self->myoPolicy_unlock)

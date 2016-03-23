@@ -17,7 +17,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 6;
+			dstSubfolderSpec = 10;
 			files = (
 				0BA92A851BF664180002A296 /* myo.framework in CopyFiles */,
 			);
@@ -175,6 +175,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MAXAPI_DIR = "../../../__SDKs__/MaxSDK-6.1.4/c74support";
 				ONLY_ACTIVE_ARCH = YES;
@@ -207,6 +208,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MAXAPI_DIR = "../../../__SDKs__/MaxSDK-6.1.4/c74support";
 				SDKROOT = macosx;
@@ -218,6 +220,7 @@
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = "$(PROJECT_DIR)/../../../build-max5";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					../../lib/myo,
 					"$(MAXAPI_DIR)/**",
@@ -227,7 +230,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "MAX611=1";
 				HEADER_SEARCH_PATHS = "$(MAXAPI_DIR)/**";
 				INSTALL_PATH = /;
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
 					MaxAPI,
@@ -245,6 +248,7 @@
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = "$(PROJECT_DIR)/../../../build-max5";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					../../lib/myo,
 					"$(MAXAPI_DIR)/**",
@@ -253,7 +257,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "MAX611=1";
 				HEADER_SEARCH_PATHS = "$(MAXAPI_DIR)/**";
 				INSTALL_PATH = /;
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
 					MaxAPI,

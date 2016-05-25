@@ -744,6 +744,7 @@ void MaxMyoListener::onConnect(myo::Myo *myo, uint64_t timestamp,
     }
     for (int i = 0; i < 4; i++) emg_frames[i].fill(0.);
     onMaxMyoSync(maxObject_);
+    myo_dump_devlist(maxObject_);
 }
 
 void MaxMyoListener::onDisconnect(myo::Myo *myo, uint64_t timestamp) {

@@ -9,6 +9,15 @@ This object has been developed by [Jules Françoise](http://julesfrancoise.com/)
 It is based on the Myo c++ API by Thalmic Labs.
 This object should be compiled with Max SDK version 6 or greater.
 
+### Usage
+
+*myo for max* is only compatible with MacOS 10.8+, with Max running in 64-bit mode. To switch Max to 64-bit:
+
+1. In the finder, finder "Max.app" in the applications folder
+2. Right click and "Get Info"
+3. Uncheck "Open in 32-bit mode"
+4. restart Max
+
 ### Author
 
 This code has been initially authored by <a href="http://julesfrancoise.com">Jules Françoise</a> during his Postdoctoral Fellowship at Simon Fraser University, in the context of the [MovingStories](http://movingstories.ca/) research partnership, under the supervision of Thecla Schiphorst.

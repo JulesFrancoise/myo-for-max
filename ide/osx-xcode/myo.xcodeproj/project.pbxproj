@@ -177,7 +177,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				MAXAPI_DIR = "../../../__SDKs__/MaxSDK-6.1.4/c74support";
+				MAXAPI_DIR = "../../../__SDKs__/max-sdk-7.3.3/source/c74support";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -210,7 +210,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				MAXAPI_DIR = "../../../__SDKs__/MaxSDK-6.1.4/c74support";
+				MAXAPI_DIR = "../../../__SDKs__/max-sdk-7.3.3/source/c74support";
 				SDKROOT = macosx;
 			};
 			name = Deployment;

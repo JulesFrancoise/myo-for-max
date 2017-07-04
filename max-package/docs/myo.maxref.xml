@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<?xml-stylesheet href="./_c74_ref.xsl" type="text/xsl"?>
+
+<c74object name="myo">
+	<digest>
+		An external for communicating with the Myo Armband.
+	</digest>
+	<description>
+    This external requires a recent version of the "Myo Connect" middleware running - it is based on the Myo SDK V0.9.0. Myo Connect should be running before instantiating the object or opening Max. Because the Myo SDK is only available in 64-bits, the external can only be used with 64-bit Max.
+	</description>
+
+	<!--METADATA-->
+	<metadatalist>
+		<metadata name="author">
+		Jules Françoise
+		</metadata>
+		<metadata name="copyright">
+		 © 2015 - 2017, Jules Françoise - Mozilla Public Licence MPL2
+		</metadata>
+		<metadata name="version">
+		unknown version
+		</metadata>
+	</metadatalist>
+
+	<!--INLETS-->
+	<inletlist>
+		<inlet id="0" name="messages">
+			<digest>
+			</digest>
+			<description>
+				Messages and frame querying (see methods for details).
+			</description>
+		</inlet>
+	</inletlist>
+
+	<!--OUTLETS-->
+	<outletlist>
+		<outlet id="0" name="Acceleration data (3D)">
+			<digest>
+			</digest>
+			<description>
+				The acceleration data from the 3D accelerometer of the Myo. In streaming mode, a frame of acceleration data is output as soon as it is available from the Myo Middleware. In query mode, a bang will output the current available frame of acceleration data.
+			</description>
+		</outlet>
+		<outlet id="1" name="Gyroscopes (3D angular velocities)">
+			<digest>
+			</digest>
+			<description>
+				The angular velocities from the 3 gyroscopes of the Myo. In streaming mode, a frame of gyroscopic data is output as soon as it is available from the Myo Middleware. In query mode, a bang will output the current available frame of gyroscopic data.
+			</description>
+		</outlet>
+		<outlet id="2" name="Orientation Data (Quaternions)">
+			<digest>
+			</digest>
+			<description>
+				The orientation estimated by the Myo as 4D quaternions (x, y, z, w). In streaming mode, a frame of orientation data is output as soon as it is available from the Myo Middleware. In query mode, a bang will output the current available frame of orientation data.
+			</description>
+		</outlet>
+		<outlet id="3" name="EMG Data">
+			<digest>
+			</digest>
+			<description>
+				The electromyographic (EMG) signals captured by the 8 electrodes of the Myo. In streaming mode, a frame of EMG data is output as soon as it is available from the Myo Middleware. In query mode, a bang will output the current available frame of EMG data.
+			</description>
+		</outlet>
+		<outlet id="4" name="Poses estimated by the native Myo gesture recognition">
+			<digest>
+			</digest>
+			<description>
+				The gestures estimated by the Myo SDK (See help patch)
+			</description>
+		</outlet>
+		<outlet id="5" name="Info">
+			<digest>
+			</digest>
+			<description>
+				Information about the current state of the external: list of devices, connected device, arm synchronization, battery and RSSI.
+			</description>
+		</outlet>
+	</outletlist>
+
+	<!--ARGUMENTS-->
+	<objarglist>
+		<objarg name="Device name" type="symbol" optional="1">
+			<digest>
+        The name of the device to look for.
+			</digest>
+			<description>
+  			If the device name is specified, the external will listen for the connection of the Myo Armband with the given name. As soon as the device connects, the external will output from the rightmost outlet the name of the connected device.
+			</description>
+		</objarg>
+	</objarglist>
+
+	<!--ATTRIBUTES-->
+	<attributelist>
+		<attribute name="device" get="1" set="1" type="symbol" size="1" default="auto">
+      <digest>
+        Device name.
+      </digest>
+      <description>
+        If the device name is specified, the external will listen for the connection of the Myo Armband with the given name. As soon as the device connects, the external will output from the rightmost outlet the name of the connected device.
+      </description>
+    </attribute>
+
+		<attribute name="emg" get="1" set="1" type="int" size="1" default="1">
+			<digest>
+				Toggles EMG data streaming.
+			</digest>
+			<description>
+				Enable/disable EMG streaming (EMG streaming might affect battery usage).
+			</description>
+		</attribute>
+
+    <attribute name="stream" get="1" set="1" type="int" size="1">
+			<digest>
+				Toggles data streaming.
+			</digest>
+			<description>
+				In streaming mode, sensor values are streamed from the object as soon as they get accessible from the Myo SDK. This mode provides the highest samplerate possible, but can result in several simultaneous frames of data if more than a single frame is contained in the packet received from the device.
+			</description>
+		</attribute>
+
+		<attribute name="unlock" get="1" set="1" type="int" size="1" default="1">
+			<digest>
+				Keep Myo unlocked for gesture recognition
+			</digest>
+			<description>
+				Keep Myo unlocked for gesture recognition.
+			</description>
+		</attribute>
+	</attributelist>
+
+	<!--MESSAGES-->
+	<methodlist>
+		<method name="connect">
+			<digest>
+        Connect to your Myo armband.
+			</digest>
+			<description>
+				Connect to your Myo armband.
+			</description>
+		</method>
+		<method name="disconnect">
+			<digest>
+        Disconnect from your Myo armband.
+			</digest>
+			<description>
+				Disconnect from your Myo armband.
+			</description>
+		</method>
+		<method name="info">
+			<digest>
+        Get info on battery level (0-100) and RSSI (signal quality).
+			</digest>
+			<description>
+				Get info on battery level (0-100) and RSSI (signal quality).
+			</description>
+		</method>
+		<method name="devices">
+			<digest>
+        Get the list of available devices.
+			</digest>
+			<description>
+				Get the list of available devices.
+			</description>
+		</method>
+		<method name="vibrate">
+			<arglist>
+				<arg name="type of vibration" type="symbol or int" optional="1" id="0" />
+			</arglist>
+			<digest>
+        Make the connected armband vibrate.
+			</digest>
+			<description>
+				Make the connected armband vibrate. optional arguments can be one of the following: short / medium / long / 0 / 1 / 2.
+			</description>
+		</method>
+	</methodlist>
+
+	<!--SEEALSO-->
+	<seealsolist>
+		<seealso name="pipo.bayesfilter" />
+	</seealsolist>
+
+	<!--MENU ITEMS-->
+	<menuitemlist>
+	</menuitemlist>
+
+	<!--EXAMPLE-->
+	<examplelist>
+  </examplelist>
+</c74object>

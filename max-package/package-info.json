@@ -1,0 +1,39 @@
+{
+  "author": "Jules Françoise",
+  "authors": [ "Jules Françoise", "Yves Candau" ],
+  "description": "An external for communicating with the Myo Armband",
+  "displayname": "Myo for Max",
+  "extends": "",
+  "extensible": 0,
+  "homepatcher": "myo.maxhelp",
+  "max_version_max": "none",
+  "max_version_min": "6.1.0",
+  "name": "myo",
+  "os": {
+    "macintosh": {
+      "platform": ["x64"],
+      "min_version": "none"
+    },
+    "windows": {
+      "platform": ["ia32", "x64"],
+      "min_version": "none"
+    }
+
+  },
+  "package_extra": {
+
+  },
+  "tags": ["hardware", "gesture", "myo"],
+  "version": "0.1.3",
+  "website": "https://github.com/JulesFrancoise/myo-for-max",
+  "filelist": {
+    "examples": [],
+    "extensions": [],
+    "externals": ["myo.mxo"],
+    "patchers": [],
+    "help": ["myo.maxhelp"],
+    "media": [],
+    "docs": [],
+    "extras": ["BLOCKS_launch.maxpat"]
+  }
+}

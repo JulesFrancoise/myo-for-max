@@ -185,6 +185,7 @@ int C74_EXPORT main(void) {
     class_addmethod(c, (method)myo_connect, "connect", A_GIMME, 0);
     class_addmethod(c, (method)myo_disconnect, "disconnect", 0);
     class_addmethod(c, (method)myo_info, "info", 0);
+    class_addmethod(c, (method)myo_dump_devlist, "devices", 0);
     class_addmethod(
         c, (method)myo_assist, "assist", A_CANT,
         0);  // (optional) assistance method needs to be declared like this
@@ -313,7 +314,7 @@ void myo_free(t_myo *self) {
  */
 void myo_info(t_myo *self) {
     if (!self->myo_connect_running) return;
-    myo_dump_devlist(self);
+    // myo_dump_devlist(self);
     if (self->myoDevice) {
         self->myoDevice->requestBatteryLevel();
         self->myoDevice->requestRssi();
@@ -768,6 +769,7 @@ void MaxMyoListener::onArmSync(myo::Myo *myo, uint64_t timestamp, myo::Arm arm,
                                myo::XDirection xDirection, float rotation,
                                myo::WarmupState warmupState) {
     if (!maxObject_->myo_connect_running) return;
+    if (myo != maxObject_->myoDevice) return;
     t_atom arm_sync[6];
     atom_setsym(arm_sync, sym_armsync);
     atom_setlong(arm_sync + 1, 1);

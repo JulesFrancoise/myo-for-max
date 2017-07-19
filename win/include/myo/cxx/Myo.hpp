@@ -65,6 +65,21 @@ public:
 
     /// @endcond
 
+	// @CHANGED
+	// To support device naming
+	// https://developer.thalmic.com/forums/topic/537/
+	// --------------- begin ----------------
+	void setName(std::string myoName)
+	{
+		name = myoName;
+	}
+
+	std::string getName()
+	{
+		return name;
+	}
+	// --------------- end ----------------
+
 private:
     Myo(libmyo_myo_t myo);
     ~Myo();
@@ -76,6 +91,13 @@ private:
     Myo& operator=(const Myo&);
 
     friend class Hub;
+
+	// @CHANGED
+	// To support device naming
+	// https://developer.thalmic.com/forums/topic/537/
+	// --------------- begin ----------------
+	std::string name;
+	// --------------- end ----------------
 };
 
 } // namespace myo

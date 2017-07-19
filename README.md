@@ -67,7 +67,7 @@ Then, change paths in the project setting to include the right frameworks and he
 ### Visual Studio
 
 See the Visual Studio project and solution in the repository.
-You need to have
+You need to have:
 * Cycling'74 Max SDK, currently set to 7.3.3 in the project, and placed two folders up from the repository
 
 ```
@@ -85,8 +85,12 @@ For a different folder structure you will need to change:
 
 * the macro with the path to the SDK support folder, in the SDK file:
 
-`max-sdk-7.3.3\source\c74support\max-includes\max_extern_common.props`
+```
+max-sdk-7.3.3\source\c74support\max-includes\max_extern_common.props
+```
 
 currently set to:
 
-`<C74SUPPORT>$(ProjectDir)..\..\max-sdk-7.3.3\source\c74support\</C74SUPPORT>`
+```
+<C74SUPPORT>$(ProjectDir)..\..\max-sdk-7.3.3\source\c74support\</C74SUPPORT>
+```

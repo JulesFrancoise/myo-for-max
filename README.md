@@ -22,10 +22,11 @@ This object should be compiled with Max SDK version 6 or greater.
 
 #### Windows
 
-Max needs the dll files to load *myo for max*. You will otherwise get the following error message: `Error 126 loading external myo`.
+Max needs the dll files to load *myo for max*. You will otherwise get the following error message:
+`Error 126 loading external myo`.
 
-1. Copy [win/bin/myo32.dll](../win/bin/myo32.dll) into the corresponding Max support directory, most likely "C:\Program Files (x86)\Cycling '74\Max 7\resources\support".
-2. Copy [win/bin/myo64.dll](../win/bin/myo64.dll) into the corresponding Max support directory, most likely "C:\Program Files\Cycling '74\Max 7\resources\support".
+1. Copy "win/bin/myo32.dll" into the corresponding Max support directory, most likely "C:\Program Files (x86)\Cycling '74\Max 7\resources\support".
+2. Copy "win/bin/myo64.dll" into the corresponding Max support directory, most likely "C:\Program Files\Cycling '74\Max 7\resources\support".
 
 ### Author
 
@@ -63,11 +64,17 @@ See the Visual Studio project and solution in the repository.
 You need to have
 * Cycling'74 Max SDK, currently set to 7.3.3 in the project, and placed two folders up from the repository
 
---+-- max-sdk-7.3.3
-  +-- folder ----- myo-for-max
+```──┬── max-sdk-7.3.3
+  └── *** ───── myo-for-max
+```
 
 For a different folder structure you will need to change:
-* the paths to the property sheets in [myo-for-max.vcxproj](myo-for-max.vcxproj) (search for "PropertySheets")
-* the path to the SDK support folder in the SDK file "max-sdk-7.3.3\source\c74support\max-includes\max_extern_common.props", currently set to:
+* the paths to the property sheets in [myo-for-max.vcxproj](myo-for-max.vcxproj) (search for "PropertySheets"), currently set to:
+
+```<Import Project="..\..\max-sdk-7.3.3\source\c74support\max-includes\max_extern_x86.props" />
+<Import Project="..\..\max-sdk-7.3.3\source\c74support\max-includes\max_extern_common.props" />
+```
+
+* the macro with the path to the SDK support folder, in the SDK file "max-sdk-7.3.3\source\c74support\max-includes\max_extern_common.props", currently set to:
 
 `<C74SUPPORT>$(ProjectDir)..\..\max-sdk-7.3.3\source\c74support\</C74SUPPORT>`

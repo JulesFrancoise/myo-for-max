@@ -240,7 +240,7 @@ void *myo_new(t_symbol *s, long argc, t_atom *argv) {
 
     self = (t_myo *)object_alloc(myo_class);
 
-    long ac = attr_args_offset(argc, argv);
+    long ac = attr_args_offset((short)argc, argv);
 
     if (self) {
         systhread_mutex_new(&self->mutex, 0);
@@ -283,7 +283,7 @@ void *myo_new(t_symbol *s, long argc, t_atom *argv) {
         }
 
         // process attributes
-        attr_args_process(self, argc, argv);
+        attr_args_process(self, (short)argc, argv);
     }
     return (self);
 }
@@ -326,7 +326,7 @@ void myo_info(t_myo *self) {
  */
 void myo_dump_devlist(t_myo *self) {
     if (!self->myo_connect_running) return;
-    long listlen = 1 + self->myoListener->connectedDevices.size();
+    long listlen = (long)(1 + self->myoListener->connectedDevices.size());
     t_atom *devlist = (t_atom *)sysmem_newptr(sizeof(t_atom) * listlen);
     atom_setsym(devlist, gensym("devices"));
     int offset = 1;
@@ -334,7 +334,7 @@ void myo_dump_devlist(t_myo *self) {
         atom_setsym(devlist + offset, gensym(device->getName().c_str()));
         offset++;
     }
-    outlet_list(self->outlet_info, NULL, listlen, devlist);
+    outlet_list(self->outlet_info, NULL, (short)listlen, devlist);
 }
 
 /**
@@ -841,7 +841,7 @@ void MaxMyoListener::onEmgData(myo::Myo *myo, uint64_t timestamp,
     }
     emg_timestamp = timestamp;
     for (int i = 0; i < 8; i++) {
-        emg_frames[num_emg_frames][i] = static_cast<float>(emg[i]) / 127.;
+        emg_frames[num_emg_frames][i] = static_cast<float>(emg[i]) / (float)127.;
     }
     num_emg_frames++;
     if (maxObject_->stream) myo_dump_emg(maxObject_);

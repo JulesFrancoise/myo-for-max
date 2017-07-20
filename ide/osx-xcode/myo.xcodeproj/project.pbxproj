@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B0A77DC1BF57C57008A44F6 /* myo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B0A77DB1BF57C57008A44F6 /* myo.framework */; };
-		0BA92A851BF664180002A296 /* myo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0B0A77DB1BF57C57008A44F6 /* myo.framework */; };
 		7C0C8F271B7A60CF005E93BF /* myo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C0C8F261B7A60CF005E93BF /* myo.cpp */; };
+		FA6535191F2121EF001C134D /* myo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6535181F2121EF001C134D /* myo.framework */; };
+		FA65351A1F21222E001C134D /* myo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FA6535181F2121EF001C134D /* myo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -19,16 +19,16 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0BA92A851BF664180002A296 /* myo.framework in CopyFiles */,
+				FA65351A1F21222E001C134D /* myo.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0B0A77DB1BF57C57008A44F6 /* myo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = myo.framework; path = ../../lib/myo/myo.framework; sourceTree = "<group>"; };
 		2FBBEAE508F335360078DB84 /* myo.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = myo.mxo; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C0C8F261B7A60CF005E93BF /* myo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = myo.cpp; path = ../../src/myo.cpp; sourceTree = "<group>"; };
+		FA6535181F2121EF001C134D /* myo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = myo.framework; path = ../../lib/osx/myo/myo.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,7 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B0A77DC1BF57C57008A44F6 /* myo.framework in Frameworks */,
+				FA6535191F2121EF001C134D /* myo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,7 +47,7 @@
 			isa = PBXGroup;
 			children = (
 				7C0C8F261B7A60CF005E93BF /* myo.cpp */,
-				0B0A77DB1BF57C57008A44F6 /* myo.framework */,
+				FA6535181F2121EF001C134D /* myo.framework */,
 				19C28FB4FE9D528D11CA2CBB /* Products */,
 			);
 			name = iterator;
@@ -219,10 +219,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = "$(PROJECT_DIR)/../../../build-max5";
+				DSTROOT = "$(PROJECT_DIR)/../../max-package/externals/";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					../../lib/myo,
+					../../lib/osx/myo,
 					"$(MAXAPI_DIR)/**",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -247,10 +247,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = "$(PROJECT_DIR)/../../../build-max5";
+				DSTROOT = "$(PROJECT_DIR)/../../max-package/externals/";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					../../lib/myo,
+					../../lib/osx/myo,
 					"$(MAXAPI_DIR)/**",
 				);
 				GCC_PREFIX_HEADER = "${MAXAPI_DIR}/max-includes/macho-prefix.pch";

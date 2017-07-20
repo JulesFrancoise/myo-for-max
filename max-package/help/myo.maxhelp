@@ -44,7 +44,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 502.0, 402.5, 119.0, 20.0 ],
-					"presentation_rect" : [ 502.0, 402.0, 0.0, 0.0 ],
 					"style" : "",
 					"text" : "armsync information"
 				}
@@ -58,9 +57,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 626.5, 402.5, 196.0, 22.0 ],
-					"presentation_rect" : [ 625.0, 410.0, 0.0, 0.0 ],
-					"style" : "",
-					"text" : "movingstories-myo1"
+					"style" : ""
 				}
 
 			}
@@ -111,8 +108,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 598.0, 372.0, 196.0, 22.0 ],
-					"style" : "",
-					"text" : "movingstories-myo1"
+					"style" : ""
 				}
 
 			}
@@ -213,33 +209,6 @@
 									"patching_rect" : [ 319.0, 393.0, 64.0, 22.0 ],
 									"style" : "",
 									"text" : "stream $1"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-31",
-									"linecount" : 2,
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 35.0, 317.0, 315.0, 33.0 ],
-									"style" : "",
-									"text" : "the list of connected devices can be accessed when the object is running:"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"fontface" : 3,
-									"fontsize" : 18.0,
-									"id" : "obj-32",
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 35.0, 288.0, 160.0, 27.0 ],
-									"style" : "",
-									"text" : "get device list"
 								}
 
 							}
@@ -578,33 +547,6 @@
 							}
 , 							{
 								"box" : 								{
-									"id" : "obj-17",
-									"linecount" : 4,
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 35.0, 136.0, 315.0, 60.0 ],
-									"style" : "",
-									"text" : "Each Myo can be configured to have a particular name.\nBy default, the object looks for the first Myo connected, but it is possible to specify a target Myo by name, for example to use with multiple devices"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"fontface" : 3,
-									"fontsize" : 18.0,
-									"id" : "obj-10",
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 35.0, 107.0, 160.0, 27.0 ],
-									"style" : "",
-									"text" : "device naming"
-								}
-
-							}
-, 							{
-								"box" : 								{
 									"attr" : "device",
 									"id" : "obj-4",
 									"ignoreclick" : 1,
@@ -632,20 +574,6 @@
 							}
 , 							{
 								"box" : 								{
-									"fontface" : 0,
-									"fontsize" : 18.0,
-									"id" : "obj-16",
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 35.0, 53.0, 359.0, 27.0 ],
-									"style" : "",
-									"text" : "Device selection by name"
-								}
-
-							}
-, 							{
-								"box" : 								{
 									"background" : 1,
 									"bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
 									"fontface" : 3,
@@ -657,6 +585,79 @@
 									"patching_rect" : [ 35.0, 13.0, 197.0, 38.0 ],
 									"style" : "",
 									"text" : "Multiple Myos"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"id" : "obj-31",
+									"linecount" : 2,
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 35.0, 317.0, 315.0, 33.0 ],
+									"style" : "",
+									"text" : "the list of connected devices can be accessed when the object is running:"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"fontface" : 3,
+									"fontsize" : 18.0,
+									"id" : "obj-32",
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 35.0, 288.0, 160.0, 27.0 ],
+									"style" : "",
+									"text" : "get device list"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"id" : "obj-17",
+									"linecount" : 4,
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 35.0, 136.0, 315.0, 60.0 ],
+									"style" : "",
+									"text" : "Each Myo can be configured to have a particular name.\nBy default, the object looks for the first Myo connected, but it is possible to specify a target Myo by name, for example to use with multiple devices"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"fontface" : 3,
+									"fontsize" : 18.0,
+									"id" : "obj-10",
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 35.0, 107.0, 160.0, 27.0 ],
+									"style" : "",
+									"text" : "device naming"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"fontface" : 0,
+									"fontsize" : 18.0,
+									"id" : "obj-16",
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 35.0, 53.0, 359.0, 27.0 ],
+									"style" : "",
+									"text" : "Device selection by name"
 								}
 
 							}
@@ -1231,20 +1232,6 @@
 							}
 , 							{
 								"box" : 								{
-									"fontface" : 0,
-									"fontsize" : 18.0,
-									"id" : "obj-16",
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 35.0, 53.0, 359.0, 27.0 ],
-									"style" : "",
-									"text" : "Native Pose Recognition from the Myo SDK"
-								}
-
-							}
-, 							{
-								"box" : 								{
 									"id" : "obj-3",
 									"maxclass" : "message",
 									"numinlets" : 2,
@@ -1316,6 +1303,21 @@
 									"patching_rect" : [ 312.5, 130.0, 60.0, 22.0 ],
 									"style" : "",
 									"text" : "offset 0 0"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"fontface" : 0,
+									"fontsize" : 18.0,
+									"id" : "obj-16",
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 35.0, 53.0, 359.0, 27.0 ],
+									"style" : "",
+									"text" : "Native Pose Recognition from the Myo SDK"
 								}
 
 							}
@@ -1554,19 +1556,6 @@
 						"showontab" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
-									"id" : "obj-4",
-									"linecount" : 5,
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 766.0, 182.0, 438.0, 74.0 ],
-									"style" : "",
-									"text" : "Note:the EMG frames are often received by packet. In streaming mode, the external might output two frames of EMG data at the same time-stamp. In query mode, the external automatically reschedules the frames. For example: if the external gets 2 EMG frames every 10ms from the middleware, querying with a metro at 5ms will allow to get every frame on a consistent frame-rate."
-								}
-
-							}
-, 							{
-								"box" : 								{
 									"id" : "obj-36",
 									"maxclass" : "message",
 									"numinlets" : 2,
@@ -1614,33 +1603,6 @@
 									"patching_rect" : [ 489.0, 207.0, 51.0, 22.0 ],
 									"style" : "",
 									"text" : "metro 5"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-18",
-									"linecount" : 3,
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 418.0, 109.0, 319.0, 47.0 ],
-									"style" : "",
-									"text" : "In query mode, the object only outputs data frames when receiving a bang. This mode allows you to work at fixed samplerate."
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"fontface" : 3,
-									"fontsize" : 18.0,
-									"id" : "obj-19",
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 418.0, 80.0, 61.0, 27.0 ],
-									"style" : "",
-									"text" : "query"
 								}
 
 							}
@@ -1773,33 +1735,6 @@
 									"patching_rect" : [ 418.0, 242.0, 257.5, 22.0 ],
 									"style" : "",
 									"text" : "myo"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"id" : "obj-17",
-									"linecount" : 3,
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 42.0, 109.0, 315.0, 47.0 ],
-									"style" : "",
-									"text" : "In streaming mode, sensor values are streamed from the object as soon as they get accessible from the Myo SDK.\nThis mode provides the highest samplerate possible"
-								}
-
-							}
-, 							{
-								"box" : 								{
-									"fontface" : 3,
-									"fontsize" : 18.0,
-									"id" : "obj-16",
-									"maxclass" : "comment",
-									"numinlets" : 1,
-									"numoutlets" : 0,
-									"patching_rect" : [ 42.0, 80.0, 99.0, 27.0 ],
-									"style" : "",
-									"text" : "streaming"
 								}
 
 							}
@@ -1948,6 +1883,78 @@
 									"patching_rect" : [ 35.0, 13.0, 346.0, 38.0 ],
 									"style" : "",
 									"text" : "Data Streaming vs Query"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"id" : "obj-4",
+									"linecount" : 5,
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 766.0, 182.0, 438.0, 74.0 ],
+									"style" : "",
+									"text" : "Note:the EMG frames are often received by packet. In streaming mode, the external might output two frames of EMG data at the same time-stamp. In query mode, the external automatically reschedules the frames. For example: if the external gets 2 EMG frames every 10ms from the middleware, querying with a metro at 5ms will allow to get every frame on a consistent frame-rate."
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"id" : "obj-18",
+									"linecount" : 3,
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 418.0, 109.0, 319.0, 47.0 ],
+									"style" : "",
+									"text" : "In query mode, the object only outputs data frames when receiving a bang. This mode allows you to work at fixed samplerate."
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"fontface" : 3,
+									"fontsize" : 18.0,
+									"id" : "obj-19",
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 418.0, 80.0, 61.0, 27.0 ],
+									"style" : "",
+									"text" : "query"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"id" : "obj-17",
+									"linecount" : 3,
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 42.0, 109.0, 315.0, 47.0 ],
+									"style" : "",
+									"text" : "In streaming mode, sensor values are streamed from the object as soon as they get accessible from the Myo SDK.\nThis mode provides the highest samplerate possible"
+								}
+
+							}
+, 							{
+								"box" : 								{
+									"background" : 1,
+									"fontface" : 3,
+									"fontsize" : 18.0,
+									"id" : "obj-16",
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 42.0, 80.0, 99.0, 27.0 ],
+									"style" : "",
+									"text" : "streaming"
 								}
 
 							}

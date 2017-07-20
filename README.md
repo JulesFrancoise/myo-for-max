@@ -2,7 +2,7 @@
 
 **myo** for [Max](https://cycling74.com/products/max/) is a max external for communication with the [Myo](http://myo.com/) armband.
 
-This object has been developed by [Jules Françoise](http://julesfrancoise.com/) at Simon Fraser University, in the context of the [MovingStories](http://movingstories.ca/) research partnership, funded by the Social Sciences and Humanities Research Council ([SSHRC](http://www.sshrc-crsh.gc.ca/)).
+This object has been developed by [Jules Françoise](http://julesfrancoise.com/) and Yves Candau at Simon Fraser University, in the context of the [MovingStories](http://movingstories.ca/) research partnership, funded by the Social Sciences and Humanities Research Council ([SSHRC](http://www.sshrc-crsh.gc.ca/)).
 
 **Compatibility:** Mac OS X  10.8+, Max 6.1+, **64-bit only**. Windows, 32-bit and 64-bit.
 
@@ -34,9 +34,9 @@ Max needs dll files to load *myo for max*. You will otherwise get the following 
 
 `C:\Program Files\Cycling '74\Max 7\resources\support`
 
-### Author
+### Authors
 
-This code has been initially authored by <a href="http://julesfrancoise.com">Jules Françoise</a> during his Postdoctoral Fellowship at Simon Fraser University, in the context of the [MovingStories](http://movingstories.ca/) research partnership, under the supervision of Thecla Schiphorst.
+This code has been initially authored by <a href="http://julesfrancoise.com">Jules Françoise</a> during his Postdoctoral Fellowship at Simon Fraser University, in the context of the [MovingStories](http://movingstories.ca/) research partnership. Windows version by Yves Candau.
 
 **Contact**: Jules Françoise <jfrancoi@sfu.ca>
 

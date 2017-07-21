@@ -26,11 +26,11 @@ Max needs dll files to load *myo for max*. You will otherwise get the following 
 
 `Error 126 loading external myo`
 
-1. Copy "win/bin/myo32.dll" into the corresponding Max support directory, most likely:
+1. Copy "lib/win/dll/myo32.dll" into the 32-bit Max support directory, most likely:
 
 `C:\Program Files (x86)\Cycling '74\Max 7\resources\support`
 
-2. Copy "win/bin/myo64.dll" into the corresponding Max support directory, most likely:
+2. Copy "lib/win/dll/myo64.dll" into the 64-bit Max support directory, most likely:
 
 `C:\Program Files\Cycling '74\Max 7\resources\support`
 
@@ -66,31 +66,19 @@ Then, change paths in the project setting to include the right frameworks and he
 
 ### Visual Studio
 
-See the Visual Studio project and solution in the repository.
+See the Visual Studio project and solution in "ide/win-vs/".
 You need to have:
-* Cycling'74 Max SDK, currently set to 7.3.3 in the project, and placed two folders up from the repository
+* Cycling'74 Max SDK, currently set to 7.3.3 in the project, and placed in the same parent folder as the repository
 
 ```
 ──┬── max-sdk-7.3.3
-  └── *** ───── myo-for-max
+  └── myo-for-max
 ```
 
-For a different folder structure you will need to change:
-* the paths to the property sheets in [myo-for-max.vcxproj](myo-for-max.vcxproj) (search for "PropertySheets"), currently set to:
+For a different folder structure, change the macro which indicates the path to the Max SDK support folder, in [ide/win-vs/max_extern_common.props](ide/win-vs/max_extern_common.props), currently set to:
 
 ```
-<Import Project="..\..\max-sdk-7.3.3\source\c74support\max-includes\max_extern_x86.props" />
-<Import Project="..\..\max-sdk-7.3.3\source\c74support\max-includes\max_extern_common.props" />
+<C74SUPPORT>$(ProjectDir)..\..\..\max-sdk-7.3.3\source\c74support\</C74SUPPORT>
 ```
 
-* the macro with the path to the SDK support folder, in the SDK file:
-
-```
-max-sdk-7.3.3\source\c74support\max-includes\max_extern_common.props
-```
-
-currently set to:
-
-```
-<C74SUPPORT>$(ProjectDir)..\..\max-sdk-7.3.3\source\c74support\</C74SUPPORT>
-```
+The externals are built in "max-package\externals".

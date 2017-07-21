@@ -11,6 +11,15 @@ This object should be compiled with Max SDK version 6 or greater.
 
 ### Usage
 
+#### General
+
+Install the myo package by copying the [max-package/](max-package/) folder to one of the two possible Max package folders:
+
+* `Max 7/Packages` in your Documents (Mac) or My Documents (Windows) folder, or
+* `Max 7/Packages` in your `/Users/Shared` (Mac) or `C:\ProgramData` (Windows) folder
+
+More information on Max packages is available [here](https://docs.cycling74.com/max7/vignettes/packages).
+
 #### Mac
 
 *myo for max* is only compatible with MacOS 10.8+, with Max running in 64-bit mode. To switch Max to 64-bit:
@@ -26,13 +35,7 @@ Max needs dll files to load *myo for max*. You will otherwise get the following 
 
 `Error 126 loading external myo`
 
-1. Copy "lib/win/dll/myo32.dll" into the 32-bit Max support directory, most likely:
-
-`C:\Program Files (x86)\Cycling '74\Max 7\resources\support`
-
-2. Copy "lib/win/dll/myo64.dll" into the 64-bit Max support directory, most likely:
-
-`C:\Program Files\Cycling '74\Max 7\resources\support`
+Install the package as previously indicated to make the dll files in the package available to Max.
 
 ### Authors
 
@@ -48,9 +51,7 @@ Copyright (C) 2015 Jules Françoise.
 
 This project is released under the [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/) (MPL-2.0).
 
-This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this
-file, You can obtain one at http://mozilla.org/MPL/2.0/.
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 Covered Software is provided under this License on an "as is" basis, without warranty of any kind, either expressed, implied, or statutory, including, without limitation, warranties that the Covered Software is free of defects, merchantable, fit for a particular purpose or non-infringing. The entire risk as to the quality and performance of the Covered Software is with You. Should any Covered Software prove defective in any respect, You (not any Contributor) assume the cost of any necessary servicing, repair, or correction. This disclaimer of warranty constitutes an essential part of this License. No use of any Covered Software is authorized under this License except under this disclaimer.
 
@@ -58,7 +59,7 @@ Covered Software is provided under this License on an "as is" basis, without war
 
 ### XCode
 
-See the xcode project in "ide/xcode/".
+See the xcode project in [ide/osx-xcode/](ide/osx-xcode/).
 You need to have
 * Cycling'74 Max SDK (> 6.1)
 * Myo SDK (placed in the root directory)
@@ -66,19 +67,19 @@ Then, change paths in the project setting to include the right frameworks and he
 
 ### Visual Studio
 
-See the Visual Studio project and solution in "ide/win-vs/".
+See the Visual Studio project and solution in [ide/win-vs/](ide/win-vs/).
 You need to have:
-* Cycling'74 Max SDK, currently set to 7.3.3 in the project, and placed in the same parent folder as the repository
+* Cycling'74 Max SDK, currently set to 7.3.3 in the project, and placed in the same parent folder as the repository:
 
 ```
 ──┬── max-sdk-7.3.3
   └── myo-for-max
 ```
 
-For a different folder structure, change the macro which indicates the path to the Max SDK support folder, in [ide/win-vs/max_extern_common.props](ide/win-vs/max_extern_common.props), currently set to:
+For a different folder structure, change the macro that indicates the path to the Max SDK support folder, in [ide/win-vs/max_extern_common.props](ide/win-vs/max_extern_common.props), currently set to:
 
 ```
 <C74SUPPORT>$(ProjectDir)..\..\..\max-sdk-7.3.3\source\c74support\</C74SUPPORT>
 ```
 
-The externals are built in "max-package\externals".
+The externals are built in [max-package/externals/](max-package/externals/).

@@ -6,6 +6,15 @@ This object has been developed by [Jules Françoise](http://julesfrancoise.com/)
 
 # Usage
 
+### General
+
+Install the myo package by copying the [max-package/](max-package/) folder to one of the two possible Max package folders:
+
+* `Max 7/Packages` in your Documents (Mac) or My Documents (Windows) folder, or
+* `Max 7/Packages` in your `/Users/Shared` (Mac) or `C:\ProgramData` (Windows) folder
+
+More information on Max packages is available [here](https://docs.cycling74.com/max7/vignettes/packages).
+
 ### Mac
 
 *myo for max* is only compatible with MacOS 10.8+, with Max running in 64-bit mode. To switch Max to 64-bit:
@@ -21,10 +30,4 @@ Max needs dll files to load *myo for max*. You will otherwise get the following 
 
 `Error 126 loading external myo`
 
-1. Copy "lib/win/dll/myo32.dll" into the 32-bit Max support directory, most likely:
-
-`C:\Program Files (x86)\Cycling '74\Max 7\resources\support`
-
-2. Copy "lib/win/dll/myo64.dll" into the 64-bit Max support directory, most likely:
-
-`C:\Program Files\Cycling '74\Max 7\resources\support`
+Install the package as previously indicated to make the dll files in the package available to Max.

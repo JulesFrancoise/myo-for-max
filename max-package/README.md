@@ -8,7 +8,7 @@ This object has been developed by [Jules Françoise](http://julesfrancoise.com/)
 
 ### General
 
-Install the myo package by copying the [max-package/](max-package/) folder to one of the two possible Max package folders:
+Install the myo package by copying the [max-package/](./) folder to one of the two possible Max package folders:
 
 * `Max 7/Packages` in your Documents (Mac) or My Documents (Windows) folder, or
 * `Max 7/Packages` in your `/Users/Shared` (Mac) or `C:\ProgramData` (Windows) folder

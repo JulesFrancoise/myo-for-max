@@ -59,7 +59,7 @@ Covered Software is provided under this License on an "as is" basis, without war
 
 ### XCode
 
-See the xcode project in [ide/xcode/](ide/xcode/).
+See the xcode project in [ide/osx-xcode/](ide/osx-xcode/).
 You need to have
 * Cycling'74 Max SDK (> 6.1)
 * Myo SDK (placed in the root directory)

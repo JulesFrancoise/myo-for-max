@@ -9,6 +9,8 @@ ide/osx-xcode/myo.xcodeproj/xcuserdata
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+sysbuild/
+
 # User-specific files
 *.suo
 *.user

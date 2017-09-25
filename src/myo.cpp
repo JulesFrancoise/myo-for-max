@@ -13,6 +13,10 @@
  *
  */
 
+#if defined(WIN_VERSION)
+#define MAXAPI_USE_MSCRT
+#endif
+
 #include "ext.h"
 #include "ext_obex.h"
 #include "ext_systhread.h"
@@ -29,8 +33,10 @@
 
 typedef struct _myo t_myo;
 
+#if defined(MAC_VERSION)
 #pragma mark -
 #pragma mark Myo Device Listener
+#endif
 class MaxMyoListener : public myo::DeviceListener {
   public:
     MaxMyoListener(t_myo *maxObject)
@@ -96,8 +102,10 @@ class MaxMyoListener : public myo::DeviceListener {
     t_myo *maxObject_;
 };
 
+#if defined(MAC_VERSION)
 #pragma mark -
 #pragma mark Max object and methods definitions
+#endif
 struct _myo {
     t_object self;
 
@@ -169,9 +177,10 @@ static t_symbol *sym_armsync = gensym("armsync");
 
 t_class *myo_class;
 
+#if defined(MAC_VERSION)
 #pragma mark -
 #pragma mark Functions
-
+#endif
 // main method called only once in a Max session
 int C74_EXPORT main(void) {
     t_class *c;
@@ -540,8 +549,10 @@ void myo_vibrate(t_myo *self, t_symbol *s, long argc, t_atom *argv) {
     }
 }
 
+#if defined(MAC_VERSION)
 #pragma mark -
 #pragma mark Attributes
+#endif
 /**
  * [stream 0/1]
  * set streaming attribute (sensor data streamed as received)
@@ -728,8 +739,10 @@ void onMaxMyoSync(t_myo *self) {
     outlet_list(self->outlet_info, NULL, 2, deviceInfo);
 }
 
+#if defined(MAC_VERSION)
 #pragma mark -
 #pragma mark Myo Device Listener: Methods
+#endif
 void MaxMyoListener::onConnect(myo::Myo *myo, uint64_t timestamp,
                                myo::FirmwareVersion firmwareVersion) {
     connectedDevices.insert(myo);

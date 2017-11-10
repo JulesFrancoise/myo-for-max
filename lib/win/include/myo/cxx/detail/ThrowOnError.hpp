@@ -10,10 +10,14 @@
 #if defined(_MSC_VER) && _MSC_VER <= 1800
 #define LIBMYO_NOEXCEPT(b)
 #else
+#if defined (_MSC_VER)
+# define LIBMYO_NOEXCEPT(b) noexcept(b)
+#else
 #if __cplusplus >= 201103L
 # define LIBMYO_NOEXCEPT(b) noexcept(b)
 #else
 # define LIBMYO_NOEXCEPT(b)
+#endif
 #endif
 #endif
 
